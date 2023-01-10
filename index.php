@@ -1,28 +1,32 @@
 <?php
 
-//echo $_SERVER['REQUEST_URI'];
-$index = new index;
+//Author : Peter Shaw
+//This code can capture target website and save all resoureces, include .js, .css. etc.
+// you just set $taegeturl, and open this page in browser, remember every page please refresh 3 times!
 
+$index = new index;
 $index->besave();
 
 class Index
 {
     public function besave() {
 
-      //return;
-      $targeturl = 'https://www.ttc110.cn/';
-      $index_name = 'index.html';
+      $targeturl = 'https://dogecoin.com/';
+      echo $this->superSaveFile($targeturl);
 
-      echo $this->superSaveFile($targeturl, $index_name);
-      //echo 161;exit;
     }
 
-    private function superSaveFile($targeturl, $index_name) {
+    private function superSaveFile($targeturl) {
 
       $filename = explode('?', $_SERVER['REQUEST_URI'])[0];
+      $filename = explode('#', $filename)[0];
 
-      $filename1 = $filename == '/' ? $index_name : $filename;
-      //echo $targeturl. $filename;exit;
+      $filename1 = $filename == '/' ? 'index.html' : $filename;
+
+      if (substr($filename1, -1) == '/') {
+        $filename1 = $filename1. 'index.html';
+      }
+      //echo $targeturl. $filename1;exit;
 
       $retname = $this->createDir($filename1);
       if (is_file($retname)) {
@@ -44,7 +48,7 @@ class Index
 
   		$apath = explode('/', $path);
 
-  		//如果倒数第4个数是 .  则认为是文件，需要弹出
+  		//If the 3, 4, 5, 6th last digit is '.' Is considered to be a file, pop it.
       $sname = '';
   		if (substr(end($apath), -3, 1) === '.' || substr(end($apath), -4, 1) === '.' || substr(end($apath), -5, 1) === '.'|| substr(end($apath), -6, 1) === '.') {
   			$sname = array_pop($apath);
